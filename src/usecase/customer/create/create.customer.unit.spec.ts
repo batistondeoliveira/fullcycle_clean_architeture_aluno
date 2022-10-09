@@ -1,4 +1,4 @@
-import CustomerCreateUseCase from "./create.customer.usecase";
+import CreateCustomerUseCase from "./create.customer.usecase";
 
 const input = {
   name: "John",
@@ -23,9 +23,9 @@ describe("Unit test create customer use case", () => {
 
   it("should create a customer", async () => {
     const customerRepository = MockRepository();
-    const customerCreateUseCase = new CustomerCreateUseCase(customerRepository);
+    const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
 
-    const output = await customerCreateUseCase.execute(input);
+    const output = await createCustomerUseCase.execute(input);
 
     expect(output).toEqual({
       id: expect.any(String),
@@ -41,22 +41,22 @@ describe("Unit test create customer use case", () => {
 
   it("should throw an error when name is missing", async () => {
     const customerRepository = MockRepository();
-    const customerCreateUseCase = new CustomerCreateUseCase(customerRepository);
+    const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
 
     input.name = "";
 
-    await expect(customerCreateUseCase.execute(input)).rejects.toThrow(
+    await expect(createCustomerUseCase.execute(input)).rejects.toThrow(
       "Name is required"
     );    
   });
 
   it("should throw an error when street is missing", async () => {
     const customerRepository = MockRepository();
-    const customerCreateUseCase = new CustomerCreateUseCase(customerRepository);
+    const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
 
     input.address.street = "";
 
-    await expect(customerCreateUseCase.execute(input)).rejects.toThrow(
+    await expect(createCustomerUseCase.execute(input)).rejects.toThrow(
       "Street is required"
     );    
   })
