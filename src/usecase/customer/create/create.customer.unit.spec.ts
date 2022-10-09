@@ -1,3 +1,5 @@
+import CustomerCreateUseCase from "./create.customer.usecase";
+
 const input = {
   name: "John",
   address: {
@@ -23,7 +25,9 @@ describe("Unit test create customer use case", () => {
     const customerRepository = MockRepository();
     const customerCreateUseCase = new CustomerCreateUseCase(customerRepository);
 
-    const output = {
+    const output = await customerCreateUseCase.execute(input);
+
+    expect(output).toEqual({
       id: expect.any(String),
       name: input.name,
       address: {
@@ -32,6 +36,6 @@ describe("Unit test create customer use case", () => {
         zip: input.address.zip,
         city: input.address.city,
       },
-    }
-  })
+    });
+  });
 });
