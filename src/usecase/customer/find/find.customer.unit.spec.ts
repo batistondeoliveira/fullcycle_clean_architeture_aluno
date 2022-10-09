@@ -5,35 +5,25 @@ import CustomerModel from "../../../infrastructure/customer/repository/sequelize
 import CustomerRepository from "../../../infrastructure/customer/repository/sequelize/customer.repository";
 import FindCustomerUseCase from "./find.customer.usecase";
 
-describe("Test find customer use case", () => {
+const customer = new Customer("123", "John");
+const address = new Address("Street", 123, "Zip", "City");
+customer.changeAddress(address);    
 
-  let sequelize: Sequelize;
+const MockRepository = () => {
+  return {
+    find: jest.fn().mockReturnValue(Promise.resolve(customer)),
+    findAll: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+  }
+}
 
-  beforeEach(async () => {
-    sequelize = new Sequelize({
-      dialect: "sqlite",
-      storage: ":memory",
-      logging: false,
-      sync: { force: true },
-    });
-
-    await sequelize.addModels([CustomerModel]);
-    await sequelize.sync();
-  });
-
-  afterEach(async () => {
-    await sequelize.close();
-  });
+describe("Unit Test find customer use case", () => {  
 
   it("should find a customer", async () => {
 
-    const customerRepository = new CustomerRepository();
-    const usecase = new FindCustomerUseCase(customerRepository);
-
-    const customer = new Customer("123", "John");
-    const address = new Address("Street", 123, "Zip", "City");
-    customer.changeAddress(address);    
-    await customerRepository.create(customer)
+    const customerRepository = MockRepository();
+    const usecase = new FindCustomerUseCase(customerRepository);    
     
     const input = {
       id: "123",
@@ -50,7 +40,7 @@ describe("Test find customer use case", () => {
       }
     }
 
-    const result = usecase.execute(input);
+    const result = await usecase.execute(input);
 
     expect(result).toEqual(output);
   });
