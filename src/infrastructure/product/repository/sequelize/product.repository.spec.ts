@@ -3,6 +3,8 @@ import Product from "../../../../domain/product/entity/product";
 import ProductModel from "./product.model";
 import ProductRepository from "./product.repository";
 
+jest.useRealTimers();
+
 describe("Product repository test", () => {
   
   let sequileze: Sequelize;
