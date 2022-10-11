@@ -38,4 +38,14 @@ describe("Unit tests for notifications", () => {
       "customer: Error message,customer: Error message 2,order: Error message 3,"
     );
   });
+
+  it("should check if notification has at least one error", () => {
+    const notification = new Notification();
+    const error = {
+      message: "Error message",
+      context: "customer",
+    }
+    notification.addError(error);
+    expect(notification.hasErrors()).toBe(true);
+  });
 });
