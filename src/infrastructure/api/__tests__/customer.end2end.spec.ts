@@ -15,7 +15,7 @@ describe("E2E test for customer", () => {
     const response = await request(app)
       .post("/customer")
       .send({
-        firstName: "John",
+        name: "John",
         address: {
           street: "Street",
           city: "City",
